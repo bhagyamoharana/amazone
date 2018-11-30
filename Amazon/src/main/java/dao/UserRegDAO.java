@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,18 +26,25 @@ public class UserRegDAO {
 		try
 			{
 				con = DBConnection.createConnection(); //establishing connection
-				statement = con.createStatement(); //Statement is used to write queries. Read more about it.
-				resultSet = statement.executeQuery("select userId,password from user_table"); //Here table name is users and userName,password are columns. fetching all the records and storing in a resultSet.
-
+				/*statement = con.createStatement(); //Statement is used to write queries. Read more about it.
+				resultSet = statement.executeQuery("select id,userId,password from user_table where userId=(?) and password=(?)"); //Here table name is users and userName,password are columns. fetching all the records and storing in a resultSet.
+				*/
+				String query = "select id,userId,password from user_table where userId=(?) and password=(?)";
+				PreparedStatement   pst = con.prepareStatement(query);
+					
+					
+					pst.setString(1,userName);
+					pst.setString(2,password);
+					resultSet=pst.executeQuery();
 				while(resultSet.next()) // Until next row is present otherwise it return false
-				{
+				{	
 					userNameDB = resultSet.getString("userId"); //fetch the values present in database
 					passwordDB = resultSet.getString("password");
 					System.out.println("the values from database are" + userNameDB + "and password is " +passwordDB);
-
+					String id=resultSet.getInt("id")+"";
 					if(userName.equals(userNameDB) && password.equals(passwordDB))
-						{
-							return "SUCCESS"; ////If the user entered values are already present in database, which means user has already registered so I will return SUCCESS message.
+						{	
+							return id; ////If the user entered values are already present in database, which means user has already registered so I will return SUCCESS message.
 						}
 				}
 			}
@@ -96,5 +104,47 @@ public String addUserdetailsinDB(UserRegistrationBean loginBean)
 	   }
 	   
    }
+
+public boolean customerfind(String userName, String password){
+	con = DBConnection.createConnection();
+	try {
+		
+		// String sql = "SELECT * FROM DATABASE WHERE admin_username="+AdminName+";";
+		PreparedStatement psmt = con
+				.prepareStatement("SELECT * FROM USER_TABLE WHERE userId=(?) and password=(?)");
+		psmt.setString(1, userName);
+		psmt.setString(2, password);
+		ResultSet rs = psmt.executeQuery();
+		while (rs.next()) {
+
+			return true;
+		}
+	} catch (Exception e) {
+		// TODO: handle exception
+	} 
+	return false;
+	
+}
+
+public boolean emailIDExists(String email) {
+	con = DBConnection.createConnection();
+	try {
+		
+		// String sql = "SELECT * FROM DATABASE WHERE admin_username="+AdminName+";";
+		PreparedStatement psmt = con
+				.prepareStatement("SELECT * FROM USER_TABLE WHERE email=(?) ");
+		psmt.setString(1, email);
+		
+		ResultSet rs = psmt.executeQuery();
+		while (rs.next()) {
+			
+			
+			return true;
+		}
+	} catch (Exception e) {
+		// TODO: handle exception
+	} 
+	return false;
+}
 }
 
