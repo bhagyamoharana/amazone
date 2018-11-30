@@ -10,6 +10,9 @@
 <style>
 .mySlides {display:none;}
 </style>
+
+
+
  <style>
 * {
     box-sizing: border-box;
@@ -72,8 +75,63 @@ footer {
         width: 100%;
         height: auto;
     }
+    .form__element {
+    margin: 0 0 1em 0;
 }
+
+.form__label {
+    font-size: 1.2em;
+    display: block;
+    margin: 0 0 0.4em 0;
+}
+
+.form__input {
+    width: 100%;
+    padding: 0.6em;
+    font-size: 1.3em;
+}
+
+.form__required {
+    float: right;
+    font-size: 0.8em;
+    background: #ddd;
+    padding: 0.3em;
+}
+
+.form__hint {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.form__hint:before {
+    content: "\1F6C8";
+    font-size: 1.2em;
+    margin: 0 0.2em 0 0;
+}
+
+.form__submit {
+    background: #326f10;
+    color: #fff;
+    border: none;
+    padding: 0.6em;
+    font-size: 1.4em;
+    float: right;
+}
+}
+
+
+
+
+
+
+
+
 </style>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	
+<link rel="stylesheet" href="bootstrap/fontawesome/css/all.min.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<!--Custom styles-->
+	<link href= "bootstrap/login.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <header>
@@ -119,45 +177,98 @@ function showDivs(n) {
   }
   x[slideIndex-1].style.display = "block";  
 }
+
+
 </script>
 
 
 
 
-<form action="LoginServlet" method="post">
+
+<form action="LoginServlet" method="post" onSubmit="return validate()">
 <section>
-<nav>
-<div class="div1">
-<h1><b>Already have an Account ? <br>Sign in for best experiences</b></h1>
-<table style="background-color: blue;" >
 
- <tr>
 
- <td>Username</td>
- <td><input type="text" name="username" /></td>
- </tr>
- <tr>
- 
- <td>Password</td>
- <td><input type="password" name="password" /></td>
- </tr>
 
- <tr>
- 
 
- <td><input type="submit" value="Login"></input></td>
-<td> <input type="reset" value="Reset"></input></td>
- </tr>
-</table>
+
+    
+
+
+
+
+
+
+<body background="images/loginImage.jpg">
+ <div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card">
+			<div class="card-header">
+				<h4>AMAZON Customer Login Page</h4>
+				<p style="color: red; font-size: 15px"><%
+   					 if(null!=request.getAttribute("error"))
+    					{
+        						out.println(request.getAttribute("error"));
+   						 }
+				%></p>
+			</div>
+			<div class="card-body" >
+			
+				
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" placeholder="User Name" name="username" required>
+						
+					</div>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input type="password" class="form-control" placeholder="password" name="password" id="mypwd" aria-describedby="passwordHint"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+					       
+					</div>
+					
+					
+					<div><p class="form__hint" id="passwordHint">The password must be at least 8 characters long.</p></div>
+					<div id="error-nwl"></div>
+
+                     
+					
+					
+           
+           
+        
+					<div class="row align-items-center remember">
+						
+						<input type="checkbox" onclick="myShowPasswordFunction()">Show Password
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Login" class="btn float-right login_btn">
+					</div>
+					
+				
+			</div>
+			<div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					Don't have an account?<a href="register.jsp" class="a-links">Sign Up</a>
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
 </div>
 
-</nav>
+
 <article>
    
   
 <div class="div2" style="background-color:aqua; color:white;padding:120px;" >
 <h1><b>New to Amazon? <br>Sign up for best experiences</b></h1>
-<input type="submit" value="SignUp" name="button1">
+   
+<input type= "button" value ="SignUp" name= "button1" onclick="window.location.href='register.jsp'">
 
 </div>
 
@@ -170,5 +281,32 @@ function showDivs(n) {
 </footer>
 </div>
 </form>
+
+
+
+
+<script type ="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type ="text/javascript" src="bootstrap/js/jquery.validate.min.js"></script>
+<script>
+function validate() {
+	
+if (document.forms[0].name.value=="") {
+alert("Please Enter your  Username and Password !");
+return false;
+}
+return true;
+}
+
+function myShowPasswordFunction() {
+    var x = document.getElementById("mypwd");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+ </script>
+
 </body>
 </html>
